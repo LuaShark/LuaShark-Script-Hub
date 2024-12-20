@@ -1,0 +1,1 @@
+This License Agreement ("Agreement") is a legal agreement between the user ("User") and LuaShark | Script Hub ("Licensor") regarding the use of LuaShark | Script Hub ("LuaShark"). By using the Script, you agree to be bound by the terms of this Agreement.
