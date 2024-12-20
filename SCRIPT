@@ -1,0 +1,2 @@
+if game.PlaceId == 9196514723 then
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/lt2new'))("")
