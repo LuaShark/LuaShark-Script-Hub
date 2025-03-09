@@ -1,8 +1,8 @@
-local gameId = game.PlaceId
+local placeId = game.PlaceId  -- Get the current place ID
 
-if gameId == 4588604953 then
+if placeId == 4588604953 or placeId == 8343259840 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaShark/LuaShark-Script-Hub/refs/heads/main/Criminality"))()
-elseif gameId == 9196514723 then
+elseif placeId == 9196514723 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaShark/LuaShark-Script-Hub/refs/heads/main/Chicblock-P"))()
 else
     game.Players.LocalPlayer:Kick("This Game Isn't Supported!")
