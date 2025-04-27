@@ -1,0 +1,176 @@
+--this is a random gui testing feel free to use. (made with chatgpt.)
+--// My Cool UI Library with Animations 🚀
+local TweenService = game:GetService("TweenService")
+
+local Library = {}
+Library.__index = Library
+
+-- Create Window with Slide In Animation
+function Library:CreateWindow(name)
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "MyUILib"
+    ScreenGui.Parent = game:GetService("CoreGui")
+
+    -- Main Frame (Window)
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Size = UDim2.new(0, 400, 0, 300)
+    MainFrame.Position = UDim2.new(0, -400, 0.5, -150)  -- Start from the left side
+    MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Parent = ScreenGui
+
+    -- Title Label
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 0, 50)
+    Title.BackgroundTransparency = 1
+    Title.Text = name
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 24
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.Parent = MainFrame
+
+    -- Tab Holder (Left Side)
+    local TabHolder = Instance.new("Frame")
+    TabHolder.Size = UDim2.new(0, 100, 1, -50)
+    TabHolder.Position = UDim2.new(0, 0, 0, 50)
+    TabHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    TabHolder.BorderSizePixel = 0
+    TabHolder.Parent = MainFrame
+
+    -- Page Holder (Right Side)
+    local PageHolder = Instance.new("Frame")
+    PageHolder.Size = UDim2.new(1, -100, 1, -50)
+    PageHolder.Position = UDim2.new(0, 100, 0, 50)
+    PageHolder.BackgroundTransparency = 1
+    PageHolder.Parent = MainFrame
+
+    -- Tween for Sliding the Window in
+    local slideIn = TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -200, 0.5, -150)})
+    slideIn:Play()
+
+    -- Close Window Animation
+    function Library:CloseWindow()
+        local slideOut = TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Position = UDim2.new(0, -400, 0.5, -150)})
+        slideOut:Play()
+        slideOut.Completed:Connect(function()
+            ScreenGui:Destroy()
+        end)
+    end
+
+    local Tabs = {}
+
+    -- Create Tabs
+    function Tabs:CreateTab(tabName)
+        local Button = Instance.new("TextButton")
+        Button.Size = UDim2.new(1, 0, 0, 40)
+        Button.BackgroundTransparency = 1
+        Button.Text = tabName
+        Button.Font = Enum.Font.Gotham
+        Button.TextSize = 18
+        Button.TextColor3 = Color3.fromRGB(200, 200, 200)
+        Button.Parent = TabHolder
+
+        local Page = Instance.new("Frame")
+        Page.Size = UDim2.new(1, 0, 1, 0)
+        Page.BackgroundTransparency = 1
+        Page.Visible = false
+        Page.Parent = PageHolder
+
+        local Layout = Instance.new("UIListLayout")
+        Layout.Padding = UDim.new(0, 10)
+        Layout.Parent = Page
+
+        -- Button Hover Animation
+        Button.MouseEnter:Connect(function()
+            TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+        end)
+
+        Button.MouseLeave:Connect(function()
+            TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(200, 200, 200)}):Play()
+        end)
+
+        -- Switching Tabs with Fade Animation
+        Button.MouseButton1Click:Connect(function()
+            -- Fade Out the current page
+            for _, page in ipairs(PageHolder:GetChildren()) do
+                if page:IsA("Frame") then
+                    local fadeOut = TweenService:Create(page, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
+                    fadeOut:Play()
+                    fadeOut.Completed:Connect(function()
+                        page.Visible = false
+                    end)
+                end
+            end
+
+            -- Fade In the selected page
+            Page.Visible = true
+            local fadeIn = TweenService:Create(Page, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0})
+            fadeIn:Play()
+        end)
+
+        local Elements = {}
+
+        -- Create Button
+        function Elements:CreateButton(text, callback)
+            local Btn = Instance.new("TextButton")
+            Btn.Size = UDim2.new(1, -10, 0, 40)
+            Btn.Position = UDim2.new(0, 5, 0, 0)
+            Btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            Btn.BorderSizePixel = 0
+            Btn.Text = text
+            Btn.Font = Enum.Font.Gotham
+            Btn.TextSize = 16
+            Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Btn.Parent = Page
+
+            -- Hover effect (scale button)
+            Btn.MouseEnter:Connect(function()
+                TweenService:Create(Btn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 45)}):Play()
+            end)
+
+            Btn.MouseLeave:Connect(function()
+                TweenService:Create(Btn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 40)}):Play()
+            end)
+
+            Btn.MouseButton1Click:Connect(function()
+                callback()
+            end)
+        end
+
+        -- Create Toggle
+        function Elements:CreateToggle(text, callback)
+            local Toggle = Instance.new("TextButton")
+            Toggle.Size = UDim2.new(1, -10, 0, 40)
+            Toggle.Position = UDim2.new(0, 5, 0, 0)
+            Toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            Toggle.BorderSizePixel = 0
+            Toggle.Text = text .. " [OFF]"
+            Toggle.Font = Enum.Font.Gotham
+            Toggle.TextSize = 16
+            Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Toggle.Parent = Page
+
+            -- Hover effect for toggle button
+            Toggle.MouseEnter:Connect(function()
+                TweenService:Create(Toggle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 45)}):Play()
+            end)
+
+            Toggle.MouseLeave:Connect(function()
+                TweenService:Create(Toggle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 40)}):Play()
+            end)
+
+            local toggled = false
+            Toggle.MouseButton1Click:Connect(function()
+                toggled = not toggled
+                Toggle.Text = text .. (toggled and " [ON]" or " [OFF]")
+                callback(toggled)
+            end)
+        end
+
+        return Elements
+    end
+
+    return Tabs
+end
+
+return Library
