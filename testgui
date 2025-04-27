@@ -1,176 +1,212 @@
 --this is a random gui testing feel free to use. (made with chatgpt.)
---// My Cool UI Library with Animations 🚀
+-- [[ ⚡ Premium Black/Red Fancy Roblox UI made for you ⚡ ]] --
+
+local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 
-local Library = {}
-Library.__index = Library
+--// MAIN UI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "CustomUI"
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
 
--- Create Window with Slide In Animation
-function Library:CreateWindow(name)
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = "MyUILib"
-    ScreenGui.Parent = game:GetService("CoreGui")
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MainFrame.Size = UDim2.new(0, 500, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Visible = false
+MainFrame.BackgroundTransparency = 0
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
 
-    -- Main Frame (Window)
-    local MainFrame = Instance.new("Frame")
-    MainFrame.Size = UDim2.new(0, 400, 0, 300)
-    MainFrame.Position = UDim2.new(0, -400, 0.5, -150)  -- Start from the left side
-    MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    MainFrame.BorderSizePixel = 0
-    MainFrame.Parent = ScreenGui
+-- Corner Rounding
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
 
-    -- Title Label
-    local Title = Instance.new("TextLabel")
-    Title.Size = UDim2.new(1, 0, 0, 50)
-    Title.BackgroundTransparency = 1
-    Title.Text = name
-    Title.Font = Enum.Font.GothamBold
-    Title.TextSize = 24
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.Parent = MainFrame
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.fromRGB(255, 0, 0)
+UIStroke.Parent = MainFrame
 
-    -- Tab Holder (Left Side)
-    local TabHolder = Instance.new("Frame")
-    TabHolder.Size = UDim2.new(0, 100, 1, -50)
-    TabHolder.Position = UDim2.new(0, 0, 0, 50)
-    TabHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    TabHolder.BorderSizePixel = 0
-    TabHolder.Parent = MainFrame
+--// Title Bar
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Parent = MainFrame
+TopBar.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+TopBar.Size = UDim2.new(1, 0, 0, 30)
+TopBar.BorderSizePixel = 0
 
-    -- Page Holder (Right Side)
-    local PageHolder = Instance.new("Frame")
-    PageHolder.Size = UDim2.new(1, -100, 1, -50)
-    PageHolder.Position = UDim2.new(0, 100, 0, 50)
-    PageHolder.BackgroundTransparency = 1
-    PageHolder.Parent = MainFrame
+local TopLabel = Instance.new("TextLabel")
+TopLabel.Parent = TopBar
+TopLabel.Size = UDim2.new(1, 0, 1, 0)
+TopLabel.BackgroundTransparency = 1
+TopLabel.Text = "⚡ Fancy Custom UI"
+TopLabel.Font = Enum.Font.GothamBold
+TopLabel.TextSize = 18
+TopLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Tween for Sliding the Window in
-    local slideIn = TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -200, 0.5, -150)})
-    slideIn:Play()
+--// X Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Parent = TopBar
+CloseButton.Text = "X"
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Position = UDim2.new(1, -30, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+CloseButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 18
+CloseButton.BorderSizePixel = 0
 
-    -- Close Window Animation
-    function Library:CloseWindow()
-        local slideOut = TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Position = UDim2.new(0, -400, 0.5, -150)})
-        slideOut:Play()
-        slideOut.Completed:Connect(function()
-            ScreenGui:Destroy()
-        end)
-    end
+local CloseUICorner = Instance.new("UICorner")
+CloseUICorner.CornerRadius = UDim.new(0, 8)
+CloseUICorner.Parent = CloseButton
 
-    local Tabs = {}
+--// Settings Button (⚙️)
+local SettingsButton = Instance.new("TextButton")
+SettingsButton.Parent = TopBar
+SettingsButton.Text = "⚙️"
+SettingsButton.Size = UDim2.new(0, 30, 0, 30)
+SettingsButton.Position = UDim2.new(1, -60, 0, 0)
+SettingsButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+SettingsButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+SettingsButton.Font = Enum.Font.GothamBold
+SettingsButton.TextSize = 18
+SettingsButton.BorderSizePixel = 0
 
-    -- Create Tabs
-    function Tabs:CreateTab(tabName)
-        local Button = Instance.new("TextButton")
-        Button.Size = UDim2.new(1, 0, 0, 40)
-        Button.BackgroundTransparency = 1
-        Button.Text = tabName
-        Button.Font = Enum.Font.Gotham
-        Button.TextSize = 18
-        Button.TextColor3 = Color3.fromRGB(200, 200, 200)
-        Button.Parent = TabHolder
+local SettingsUICorner = Instance.new("UICorner")
+SettingsUICorner.CornerRadius = UDim.new(0, 8)
+SettingsUICorner.Parent = SettingsButton
 
-        local Page = Instance.new("Frame")
-        Page.Size = UDim2.new(1, 0, 1, 0)
-        Page.BackgroundTransparency = 1
-        Page.Visible = false
-        Page.Parent = PageHolder
+--// Tabs
+local TabFrame = Instance.new("Frame")
+TabFrame.Parent = MainFrame
+TabFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+TabFrame.Position = UDim2.new(0, 0, 0, 30)
+TabFrame.Size = UDim2.new(0, 150, 1, -30)
+TabFrame.BorderSizePixel = 0
 
-        local Layout = Instance.new("UIListLayout")
-        Layout.Padding = UDim.new(0, 10)
-        Layout.Parent = Page
+local UIPadding = Instance.new("UIPadding", TabFrame)
+UIPadding.PaddingTop = UDim.new(0, 10)
 
-        -- Button Hover Animation
-        Button.MouseEnter:Connect(function()
-            TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
-        end)
+local TabList = Instance.new("UIListLayout", TabFrame)
+TabList.SortOrder = Enum.SortOrder.LayoutOrder
+TabList.Padding = UDim.new(0, 5)
 
-        Button.MouseLeave:Connect(function()
-            TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(200, 200, 200)}):Play()
-        end)
+--// Tab Button Template
+local function CreateTabButton(name)
+    local Button = Instance.new("TextButton")
+    Button.Parent = TabFrame
+    Button.Size = UDim2.new(1, -20, 0, 40)
+    Button.Position = UDim2.new(0, 10, 0, 0)
+    Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button.Font = Enum.Font.Gotham
+    Button.TextSize = 16
+    Button.Text = name
+    Button.BorderSizePixel = 0
+    
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 6)
+    UICorner.Parent = Button
 
-        -- Switching Tabs with Fade Animation
-        Button.MouseButton1Click:Connect(function()
-            -- Fade Out the current page
-            for _, page in ipairs(PageHolder:GetChildren()) do
-                if page:IsA("Frame") then
-                    local fadeOut = TweenService:Create(page, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
-                    fadeOut:Play()
-                    fadeOut.Completed:Connect(function()
-                        page.Visible = false
-                    end)
-                end
-            end
+    -- Hover Effect
+    Button.MouseEnter:Connect(function()
+        TweenService:Create(Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(255, 0, 0)}):Play()
+    end)
+    Button.MouseLeave:Connect(function()
+        TweenService:Create(Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
+    end)
 
-            -- Fade In the selected page
-            Page.Visible = true
-            local fadeIn = TweenService:Create(Page, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0})
-            fadeIn:Play()
-        end)
-
-        local Elements = {}
-
-        -- Create Button
-        function Elements:CreateButton(text, callback)
-            local Btn = Instance.new("TextButton")
-            Btn.Size = UDim2.new(1, -10, 0, 40)
-            Btn.Position = UDim2.new(0, 5, 0, 0)
-            Btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-            Btn.BorderSizePixel = 0
-            Btn.Text = text
-            Btn.Font = Enum.Font.Gotham
-            Btn.TextSize = 16
-            Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Btn.Parent = Page
-
-            -- Hover effect (scale button)
-            Btn.MouseEnter:Connect(function()
-                TweenService:Create(Btn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 45)}):Play()
-            end)
-
-            Btn.MouseLeave:Connect(function()
-                TweenService:Create(Btn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 40)}):Play()
-            end)
-
-            Btn.MouseButton1Click:Connect(function()
-                callback()
-            end)
-        end
-
-        -- Create Toggle
-        function Elements:CreateToggle(text, callback)
-            local Toggle = Instance.new("TextButton")
-            Toggle.Size = UDim2.new(1, -10, 0, 40)
-            Toggle.Position = UDim2.new(0, 5, 0, 0)
-            Toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-            Toggle.BorderSizePixel = 0
-            Toggle.Text = text .. " [OFF]"
-            Toggle.Font = Enum.Font.Gotham
-            Toggle.TextSize = 16
-            Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Toggle.Parent = Page
-
-            -- Hover effect for toggle button
-            Toggle.MouseEnter:Connect(function()
-                TweenService:Create(Toggle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 45)}):Play()
-            end)
-
-            Toggle.MouseLeave:Connect(function()
-                TweenService:Create(Toggle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, -10, 0, 40)}):Play()
-            end)
-
-            local toggled = false
-            Toggle.MouseButton1Click:Connect(function()
-                toggled = not toggled
-                Toggle.Text = text .. (toggled and " [ON]" or " [OFF]")
-                callback(toggled)
-            end)
-        end
-
-        return Elements
-    end
-
-    return Tabs
+    return Button
 end
 
-return Library
+local MainTab = CreateTabButton("Main")
+local SettingsTab = CreateTabButton("Settings")
+
+--// Pages
+local PagesFrame = Instance.new("Frame")
+PagesFrame.Parent = MainFrame
+PagesFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+PagesFrame.Position = UDim2.new(0, 150, 0, 30)
+PagesFrame.Size = UDim2.new(1, -150, 1, -30)
+PagesFrame.BorderSizePixel = 0
+
+local UIPageLayout = Instance.new("UIPageLayout", PagesFrame)
+UIPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIPageLayout.EasingDirection = Enum.EasingDirection.InOut
+UIPageLayout.EasingStyle = Enum.EasingStyle.Quad
+
+local MainPage = Instance.new("Frame")
+MainPage.Parent = PagesFrame
+MainPage.Size = UDim2.new(1, 0, 1, 0)
+MainPage.BackgroundTransparency = 1
+
+local SettingsPage = Instance.new("Frame")
+SettingsPage.Parent = PagesFrame
+SettingsPage.Size = UDim2.new(1, 0, 1, 0)
+SettingsPage.BackgroundTransparency = 1
+
+--// Switching Tabs
+MainTab.MouseButton1Click:Connect(function()
+    UIPageLayout:JumpTo(MainPage)
+end)
+SettingsTab.MouseButton1Click:Connect(function()
+    UIPageLayout:JumpTo(SettingsPage)
+end)
+
+--// Close Button
+CloseButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
+end)
+
+--// Default Toggle Keybind
+local ToggleKey = Enum.KeyCode.RightControl
+
+local SettingsText = Instance.new("TextButton")
+SettingsText.Parent = SettingsPage
+SettingsText.Size = UDim2.new(0, 200, 0, 50)
+SettingsText.Position = UDim2.new(0.5, -100, 0.3, 0)
+SettingsText.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+SettingsText.Text = "Change Toggle Key"
+SettingsText.TextColor3 = Color3.fromRGB(255, 255, 255)
+SettingsText.Font = Enum.Font.Gotham
+SettingsText.TextSize = 16
+SettingsText.BorderSizePixel = 0
+
+local UICorner2 = Instance.new("UICorner")
+UICorner2.CornerRadius = UDim.new(0, 6)
+UICorner2.Parent = SettingsText
+
+SettingsText.MouseButton1Click:Connect(function()
+    SettingsText.Text = "Press a Key..."
+    local conn
+    conn = UserInputService.InputBegan:Connect(function(input, gpe)
+        if not gpe then
+            ToggleKey = input.KeyCode
+            SettingsText.Text = "Keybind set to: "..tostring(ToggleKey.Name)
+            conn:Disconnect()
+        end
+    end)
+end)
+
+--// Settings ⚙️ button switch
+SettingsButton.MouseButton1Click:Connect(function()
+    UIPageLayout:JumpTo(SettingsPage)
+end)
+
+--// Toggle UI
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == ToggleKey then
+        MainFrame.Visible = not MainFrame.Visible
+    end
+end)
+
+--// Animate MainFrame In
+task.wait(0.5)
+MainFrame.Visible = true
+MainFrame.Position = UDim2.new(0.5, -250, 1.2, 0)
+TweenService:Create(MainFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -250, 0.5, -150)}):Play()
