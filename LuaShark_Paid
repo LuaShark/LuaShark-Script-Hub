@@ -5,5 +5,5 @@ if placeId == 7075760303 or placeId == 7075761003 then
 elseif placeId == 9196514723 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaShark/LuaShark-Script-Hub/refs/heads/main/Chicblock-P"))()
 else
-    game.Players.LocalPlayer:Kick("This Game Isn't Supported!")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaShark/LuaShark-Script-Hub/refs/heads/main/jbpaid"))()
 end
