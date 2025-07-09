@@ -1,9 +1,7 @@
 local placeId = game.PlaceId  -- Get the current place ID
 
-if placeId == 7075760303 or placeId == 7075761003 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaShark/LuaShark-Script-Hub/refs/heads/main/hc6paid"))()
-elseif placeId == 9196514723 then
+if placeId == 9196514723 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaShark/LuaShark-Script-Hub/refs/heads/main/Chicblock-P"))()
 else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaShark/LuaShark-Script-Hub/refs/heads/main/jbpaid"))()
+    game.Players.LocalPlayer:Kick("This script is only allowed in Chicblocko.")
 end
