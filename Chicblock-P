@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 local lp = Players.LocalPlayer
 
-local IDS_URL = "https://raw.githubusercontent.com/LuaSharkOfficial/whitelist/refs/heads/main/ids"
+local IDS_URL = "https://raw.githubusercontent.com/LuaSharkOfficial/whitelist/main/wlsystem"
 
 -- Roblox notification (retries because SetCore isn't always ready right away)
 local function notify(title, text)
