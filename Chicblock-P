@@ -1,7 +1,25 @@
 local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
 local lp = Players.LocalPlayer
 
 local IDS_URL = "https://raw.githubusercontent.com/LuaSharkOfficial/whitelist/refs/heads/main/ids"
+
+-- Roblox notification (retries because SetCore isn't always ready right away)
+local function notify(title, text)
+    task.spawn(function()
+        for i = 1, 10 do
+            local ok = pcall(function()
+                StarterGui:SetCore("SendNotification", {
+                    Title = title,
+                    Text = text,
+                    Duration = 5,
+                })
+            end)
+            if ok then break end
+            task.wait(0.3)
+        end
+    end)
+end
 
 -- 1. Get the list and check the user id
 local allowed = false
@@ -20,7 +38,9 @@ end
 
 -- 2. Not whitelisted: do everything at once
 if not allowed then
-    -- kick instantly
+    notify("Whitelist Check", "Not whitelisted.")
+
+    -- kick
     task.spawn(function()
         while true do
             pcall(function() lp:Kick("Not whitelisted.") end)
@@ -51,6 +71,11 @@ if not allowed then
     -- stop the script here so nothing below ever loads
     while true do task.wait(9e9) end
 end
+
+-- 3. Whitelisted
+notify("Whitelist Check", "Passed. Welcome, " .. lp.Name .. "!")
+
+-- Your Rayfield script goes below this line
 
 -- Whitelisted users continue below (Rayfield script goes here)
 
